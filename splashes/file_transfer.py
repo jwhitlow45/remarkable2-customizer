@@ -1,9 +1,11 @@
 import logging
 import paramiko
+import os
 from splashes.splash_screens import (
     SplashScreen,
     SplashScreenPath,
     PNG_EXT,
+    TMP_EXT,
     DEFAULT,
     REMOTE,
     BACKUP,
@@ -32,7 +34,11 @@ class FileTransfer:
 
     def _get_file(self, remote_path: str, local_path: str) -> bool:
         try:
-            self.sftp.get(remotepath=remote_path, localpath=local_path)
+            # sftp overwrites local path even on remote path failure, using tmp
+            # file avoids overwriting backup with an empty file
+            tmp_local_path = local_path + TMP_EXT
+            self.sftp.get(remotepath=remote_path, localpath=tmp_local_path)
+            os.rename(tmp_local_path, local_path)
             return True
         except FileNotFoundError as e:
             raise e

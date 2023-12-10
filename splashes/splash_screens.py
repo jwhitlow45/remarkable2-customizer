@@ -30,6 +30,7 @@ BACKUP_SPLASH_PATH = (
 )
 BACKUP_EXT = ".bak"
 PNG_EXT = ".png"
+TMP_EXT = ".tmp"
 FILES = "Files"
 
 
