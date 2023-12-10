@@ -4,6 +4,11 @@ import os
 
 
 CONFIG = Config()
+
+DEFAULT = "default"
+REMOTE = "remote"
+BACKUP = "backup"
+
 REMOTE_SPLASH_PATH = CONFIG.get_config_item("Files", "remotesplashscreenpath")
 DEFAULT_SPLASH_PATH = (
     os.path.join(
@@ -24,6 +29,7 @@ BACKUP_SPLASH_PATH = (
     + os.path.sep
 )
 BACKUP_EXT = ".bak"
+PNG_EXT = ".png"
 FILES = "Files"
 
 
@@ -41,11 +47,11 @@ SplashScreenPath = {}
 
 for splash in SplashScreen:
     SplashScreenPath[splash.value] = {
-        "default": DEFAULT_SPLASH_PATH
+        DEFAULT: DEFAULT_SPLASH_PATH
         + CONFIG.get_config_item(FILES, splash.value.lower()),
-        "remote": REMOTE_SPLASH_PATH
+        REMOTE: REMOTE_SPLASH_PATH
         + CONFIG.get_config_item(FILES, splash.value.lower()),
-        "backup": BACKUP_SPLASH_PATH
+        BACKUP: BACKUP_SPLASH_PATH
         + CONFIG.get_config_item(FILES, splash.value.lower())
         + BACKUP_EXT,
     }
