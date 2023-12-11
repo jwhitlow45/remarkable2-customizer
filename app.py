@@ -1,11 +1,11 @@
 import tkinter as tk
 from pages.settings import SettingsPage
-from pages.home import HomePage
+from pages.splash import SplashPage
 from static_deps.TkinterSidebar2 import Sidebar
 
 from icons.path import ICON_PATH
 
-PAGES = (SettingsPage, HomePage)
+PAGES = (SettingsPage, SplashPage)
 
 
 class TkinterApp(tk.Tk):
@@ -15,9 +15,11 @@ class TkinterApp(tk.Tk):
         self.geometry("800x400")
 
         sidebar = Sidebar(self)
-        sidebar.add_spacer("Splash Screens")
+        sidebar.add_spacer("Navigation")
         sidebar.add_button(
-            "Home", lambda: self.show_frame(HomePage), icon=ICON_PATH + "settings.png"
+            "Splash Pages",
+            lambda: self.show_frame(SplashPage),
+            icon=ICON_PATH + "settings.png",
         )
         sidebar.add_button(
             "Settings",
