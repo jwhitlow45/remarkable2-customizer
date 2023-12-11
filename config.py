@@ -2,6 +2,10 @@ import os
 from configparser import ConfigParser
 
 DEFAULT_CONFIG_PATH = "." + os.path.sep + "default_config.cfg"
+USER_CONFIG_PATH = "." + os.path.sep + "user_config.cfg"
+
+CRED_SECTION = "Credentials"
+FILES_SECTION = "Files"
 
 
 class Config:

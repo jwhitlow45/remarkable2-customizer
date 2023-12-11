@@ -1,6 +1,7 @@
 from enum import Enum
 from config import Config
 import os
+from config import FILES_SECTION
 
 
 CONFIG = Config()
@@ -31,7 +32,6 @@ BACKUP_SPLASH_PATH = (
 BACKUP_EXT = ".bak"
 PNG_EXT = ".png"
 TMP_EXT = ".tmp"
-FILES = "Files"
 
 
 class SplashScreen(Enum):
@@ -49,10 +49,10 @@ SplashScreenPath = {}
 for splash in SplashScreen:
     SplashScreenPath[splash.value] = {
         DEFAULT: DEFAULT_SPLASH_PATH
-        + CONFIG.get_config_item(FILES, splash.value.lower()),
+        + CONFIG.get_config_item(FILES_SECTION, splash.value.lower()),
         REMOTE: REMOTE_SPLASH_PATH
-        + CONFIG.get_config_item(FILES, splash.value.lower()),
+        + CONFIG.get_config_item(FILES_SECTION, splash.value.lower()),
         BACKUP: BACKUP_SPLASH_PATH
-        + CONFIG.get_config_item(FILES, splash.value.lower())
+        + CONFIG.get_config_item(FILES_SECTION, splash.value.lower())
         + BACKUP_EXT,
     }
