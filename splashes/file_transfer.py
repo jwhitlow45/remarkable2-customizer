@@ -19,8 +19,9 @@ class FileTransfer:
         self.password = password
         self.ssh_conn = paramiko.SSHClient()
         self.ssh_conn.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        self.ssh_conn.connect(self.host, 22, self.username, self.password)
+        self.ssh_conn.connect(self.host, 22, self.username, self.password, timeout=5)
         self.sftp = self.ssh_conn.open_sftp()
+        logging.info("Connected to device at %s", self.host)
 
     def _put_file(self, local_path: str, remote_path: str) -> bool:
         try:
@@ -61,6 +62,12 @@ class FileTransfer:
         FileTransfer._log(success, splash_screen, "back up")
         return success
 
+    def backup_all_splash_screens(self) -> bool:
+        results = []
+        for splash in SplashScreen:
+            results.append(self.backup_splash_screen(splash))
+        return all(results)
+
     def restore_splash_screen_from_backup(self, splash_screen: SplashScreen) -> bool:
         success = self._put_file(
             SplashScreenPath[splash_screen.value][BACKUP],
@@ -69,6 +76,12 @@ class FileTransfer:
         FileTransfer._log(success, splash_screen, "restore from backup")
         return success
 
+    def restore_all_splash_screens_from_backups(self) -> bool:
+        results = []
+        for splash in SplashScreen:
+            results.append(self.restore_splash_screen_from_backup(splash))
+        return all(results)
+
     def restore_splash_screen_from_default(self, splash_screen: SplashScreen) -> bool:
         success = self._put_file(
             SplashScreenPath[splash_screen.value][DEFAULT],
@@ -76,6 +89,12 @@ class FileTransfer:
         )
         FileTransfer._log(success, splash_screen, "restore from default")
         return success
+
+    def restore_all_splash_screens_from_defaults(self) -> bool:
+        results = []
+        for splash in SplashScreen:
+            results.append(self.restore_splash_screen_from_default(splash))
+        return all(results)
 
     def set_custom_splash_screen(
         self, splash_screen: SplashScreen, path_to_splash: str
