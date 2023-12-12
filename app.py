@@ -1,11 +1,12 @@
 import tkinter as tk
-from pages.settings import SettingsPage
+from pages.settings import SettingsPage, DEFAULT_IP
 from pages.splash import SplashPage
 from static_deps.TkinterSidebar2 import Sidebar
+from config import Config, USER_CONFIG_PATH, CRED_SECTION
 
 from icons.path import ICON_PATH
 
-PAGES = (SettingsPage, SplashPage)
+PAGES = (SplashPage, SettingsPage)
 
 
 class TkinterApp(tk.Tk):
@@ -40,7 +41,10 @@ class TkinterApp(tk.Tk):
             self.frames[F] = frame
             frame.grid(row=400, column=400, sticky="nsew")
 
-        self.show_frame(PAGES[0])
+        if Config(USER_CONFIG_PATH).get_config_item(CRED_SECTION, "ip") == DEFAULT_IP:
+            self.show_frame(PAGES[1])
+        else:
+            self.show_frame(PAGES[0])
 
     def show_frame(self, cont):
         frame = self.frames[cont]
