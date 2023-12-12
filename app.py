@@ -13,7 +13,7 @@ class TkinterApp(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
         self.title("Remarkable2 Customizer")
-        self.geometry("800x400")
+        self.geometry("810x400")
 
         sidebar = Sidebar(self)
         sidebar.add_spacer("Navigation")
