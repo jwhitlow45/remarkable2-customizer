@@ -4,6 +4,7 @@ import tkinter as tk
 from splashes.file_transfer import FileTransfer
 from config import Config, USER_CONFIG_PATH, CRED_SECTION
 import logging
+from tkinter.messagebox import askyesno
 
 
 class SplashPage(tk.Frame):
@@ -11,22 +12,34 @@ class SplashPage(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.FT: FileTransfer = None
         self.disconnect_button = tk.Button(
-            self, text="Disconnect", command=lambda: self._disconnect()
+            self, text="Disconnect", command=lambda: self._disconnect
         )
         self.backup_all_button = tk.Button(
             self,
             text="Backup ALL Splashes",
-            command=lambda: self.FT.backup_all_splash_screens(),
+            command=lambda: self.exec_with_confirmation(
+                "Backup ALL Splashes",
+                "This will overwrite your most recent backup. Continue?",
+                self.FT.backup_all_splash_screens,
+            ),
         )
         self.restore_backups_button = tk.Button(
             self,
             text="Restore ALL from backups",
-            command=lambda: self.FT.restore_all_splash_screens_from_backups(),
+            command=lambda: self.exec_with_confirmation(
+                "Restore ALL from backups",
+                "This will overwrite all splashes on your device. Continue?",
+                self.FT.restore_all_splash_screens_from_backups,
+            ),
         )
         self.restore_defaults_button = tk.Button(
             self,
             text="Restore ALL from defaults",
-            command=lambda: self.FT.restore_all_splash_screens_from_defaults(),
+            command=lambda: self.exec_with_confirmation(
+                "Restore ALL from defaults",
+                "This will overwrite all splashes on your device. Continue?",
+                self.FT.restore_all_splash_screens_from_defaults,
+            ),
         )
         self.ui_grid: dict[tk.Button, list[int, int]] = {
             self.disconnect_button: [0, 1],
@@ -39,6 +52,11 @@ class SplashPage(tk.Frame):
             self, text="Connect", command=lambda: self._establish_connection()
         )
         self.connect_button.grid(row=0, column=0, padx=50, pady=10)
+
+    def exec_with_confirmation(self, title: str, msg: str, func) -> None:
+        execute = askyesno(title, msg)
+        if execute:
+            func()
 
     def _establish_connection(self) -> None:
         config = Config(USER_CONFIG_PATH)
