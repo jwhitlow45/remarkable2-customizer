@@ -18,7 +18,7 @@ class TkinterApp(tk.Tk):
         sidebar = Sidebar(self)
         sidebar.add_spacer("Navigation")
         sidebar.add_button(
-            "Splash Pages",
+            "Splash Screens",
             lambda: self.show_frame(SplashPage),
             icon=ICON_PATH + "settings.png",
         )
