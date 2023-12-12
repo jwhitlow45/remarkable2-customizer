@@ -5,6 +5,8 @@ import logging
 
 IP = "ip"
 PASSWORD = "password"
+DEFAULT_IP = "0.0.0.0"
+DEFAULT_PASSWORD = "password"
 
 
 class SettingsPage(tk.Frame):
@@ -13,10 +15,12 @@ class SettingsPage(tk.Frame):
 
         self.config = Config(USER_CONFIG_PATH)
 
-        self.ip_str = tk.StringVar(value=self.config.get_config_item(CRED_SECTION, IP))
-        self.pass_str = tk.StringVar(
-            value=self.config.get_config_item(CRED_SECTION, PASSWORD)
+        ip_str_value = self.config.get_config_item(CRED_SECTION, IP) or DEFAULT_IP
+        password_str_value = (
+            self.config.get_config_item(CRED_SECTION, PASSWORD) or DEFAULT_PASSWORD
         )
+        self.ip_str = tk.StringVar(value=ip_str_value)
+        self.pass_str = tk.StringVar(value=password_str_value)
 
         vcmd = (self.register(self._valid_ip_chars), "%P")
         ip_label = tk.Label(self, text="IP Address:")
@@ -80,8 +84,8 @@ class SettingsPage(tk.Frame):
             self._draw_info_label(error, "red")
             logging.info("Failed to save...%s", error.lower())
         else:
-            self._draw_info_label("Saved!", "green")
             self.config.save_config_item(CRED_SECTION, IP, self.ip_str.get())
             self.config.save_config_item(CRED_SECTION, PASSWORD, self.pass_str.get())
             self.config.commit_config()
+            self._draw_info_label("Saved!", "green")
             logging.info("Saved user credentials.")

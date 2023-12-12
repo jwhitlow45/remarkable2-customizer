@@ -20,6 +20,8 @@ class Config:
         return self.parser.get(section, option, fallback=None)
 
     def save_config_item(self, section: str, option: str, value: str) -> None:
+        if section not in self.parser.sections():
+            self.parser.add_section(section)
         self.parser.set(section, option, value)
 
     def commit_config(self) -> None:
