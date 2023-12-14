@@ -1,25 +1,31 @@
 import tkinter as tk
 from pages.settings import SettingsPage, DEFAULT_IP
 from pages.splash import SplashPage
+from pages.backups import BackupsPage
 from static_deps.TkinterSidebar2 import Sidebar
 from config import Config, USER_CONFIG_PATH, CRED_SECTION
 
 from icons.path import ICON_PATH
 
-PAGES = (SplashPage, SettingsPage)
+PAGES = (SplashPage, BackupsPage, SettingsPage)
 
 
 class TkinterApp(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
         self.title("Remarkable2 Customizer")
-        self.geometry("810x400")
+        self.geometry("810x440")
 
         sidebar = Sidebar(self)
         sidebar.add_spacer("Navigation")
         sidebar.add_button(
             "Splash Screens",
             lambda: self.show_frame(SplashPage),
+            icon=ICON_PATH + "settings.png",
+        )
+        sidebar.add_button(
+            "Backups",
+            lambda: self.show_frame(BackupsPage),
             icon=ICON_PATH + "settings.png",
         )
         sidebar.add_button(
@@ -42,7 +48,7 @@ class TkinterApp(tk.Tk):
             frame.grid(row=400, column=400, sticky="nsew")
 
         if Config(USER_CONFIG_PATH).get_config_item(CRED_SECTION, "ip") == DEFAULT_IP:
-            self.show_frame(PAGES[1])
+            self.show_frame(PAGES[2])
         else:
             self.show_frame(PAGES[0])
 
