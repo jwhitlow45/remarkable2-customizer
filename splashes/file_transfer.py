@@ -19,7 +19,7 @@ class FileTransfer:
         self.password = password
         self.ssh_conn = paramiko.SSHClient()
         self.ssh_conn.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        self.ssh_conn.connect(self.host, 22, self.username, self.password, timeout=5)
+        self.ssh_conn.connect(self.host, 22, self.username, self.password, timeout=3)
         self.sftp = self.ssh_conn.open_sftp()
         logging.info("Connected to device at %s", self.host)
 
