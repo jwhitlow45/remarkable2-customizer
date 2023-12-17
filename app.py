@@ -2,12 +2,13 @@ import tkinter as tk
 from pages.settings import SettingsPage, DEFAULT_IP
 from pages.splash import SplashPage
 from pages.backups import BackupsPage
+from pages.defaults import DefaultsPage
 from static_deps.TkinterSidebar2 import Sidebar
 from config import Config, USER_CONFIG_PATH, CRED_SECTION
 
 from icons.path import ICON_PATH
 
-PAGES = (SplashPage, BackupsPage, SettingsPage)
+PAGES = (SplashPage, BackupsPage, DefaultsPage, SettingsPage)
 
 
 class TkinterApp(tk.Tk):
@@ -26,6 +27,11 @@ class TkinterApp(tk.Tk):
         sidebar.add_button(
             "Backups",
             lambda: self.show_frame(BackupsPage),
+            icon=ICON_PATH + "settings.png",
+        )
+        sidebar.add_button(
+            "Defaults",
+            lambda: self.show_frame(DefaultsPage),
             icon=ICON_PATH + "settings.png",
         )
         sidebar.add_button(
@@ -48,7 +54,7 @@ class TkinterApp(tk.Tk):
             frame.grid(row=400, column=400, sticky="nsew")
 
         if Config(USER_CONFIG_PATH).get_config_item(CRED_SECTION, "ip") == DEFAULT_IP:
-            self.show_frame(PAGES[2])
+            self.show_frame(PAGES[3])
         else:
             self.show_frame(PAGES[0])
 
