@@ -38,11 +38,11 @@ class Scroller(tk.Frame):
         # buttons
         self.btn_y = 2
 
-        self._import_images()
-        self._draw_image_with_label()
-        self.__draw_navigation_buttons()
+        self._load_page()
 
     def _draw_image_with_label(self) -> None:
+        if len(self.tk_images) == 0:
+            return
         self.label_names[self.image_idx].grid(
             column=self.label_x,
             row=self.label_y,
@@ -59,6 +59,8 @@ class Scroller(tk.Frame):
         )
 
     def _clear_image_with_label(self) -> None:
+        if len(self.tk_images) == 0:
+            return
         self.label_names[self.image_idx].grid_forget()
         self.label_images[self.image_idx].grid_forget()
 
@@ -89,11 +91,26 @@ class Scroller(tk.Frame):
                 self.label_names.append(tk.Label(self, text=file))
 
     def __draw_navigation_buttons(self) -> None:
+        img_idx = 0 if len(self.tk_images) == 0 else self.image_idx + 1
         self.img_count_label = tk.Label(
-            self, text=f"{self.image_idx + 1}/{len(self.label_images)}"
+            self, text=f"{img_idx}/{len(self.label_images)}"
         )
         self.img_count_label.grid(column=self.img_x + 1, row=self.img_y + 1)
         self.left_button = tk.Button(self, text="<", command=lambda: self._navigate(-1))
         self.left_button.grid(column=self.img_x, row=self.btn_y)
         self.right_button = tk.Button(self, text=">", command=lambda: self._navigate(1))
         self.right_button.grid(column=self.img_x + 2, row=self.btn_y)
+
+    def _load_page(self) -> None:
+        self._import_images()
+        self._draw_image_with_label()
+        self.__draw_navigation_buttons()
+
+    def _reload_page(self) -> None:
+        self._clear_image_with_label()
+        self.image_idx = 0 if self.image_idx >= len(self.tk_images) else self.image_idx
+        self.tk_images = []
+        self.label_images = []
+        self.label_names = []
+        self._load_page()
+        self.update_idletasks()

@@ -60,6 +60,8 @@ class TkinterApp(tk.Tk):
 
     def show_frame(self, cont):
         frame = self.frames[cont]
+        if isinstance(frame, BackupsPage):
+            frame._reload_page()
         frame.tkraise()
 
 
